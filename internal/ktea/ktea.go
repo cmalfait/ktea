@@ -63,11 +63,12 @@ func center(s string, w int) string {
 	return strings.Repeat(" ", div) + s + strings.Repeat(" ", div)
 }
 
-func Ktea() {
-	files, err := os.ReadDir(os.Getenv("HOME") + "/.kube")
-	if err != nil {
-		log.Fatal(err)
-	}
+func Ktea(strFlag string, myDir string) {
+	// files, err := os.ReadDir(os.Getenv("HOME") + "/.kube")
+	// files, err := os.ReadDir(myDir)
+	// if err != nil {
+	//		log.Fatal(err)
+	//	}
 
 	centeredTitle := center("Kube Configs", 30)
 
@@ -77,9 +78,20 @@ func Ktea() {
 
 	rows := []table.Row{}
 
-	for _, file := range files {
-		if file.Type().IsRegular() {
-			rows = append(rows, table.Row{file.Name()})
+	//	for _, file := range files {
+	//		if file.Type().IsRegular() {
+	//			rows = append(rows, table.Row{file.Name()})
+	//		}
+	//	}
+
+	dirs, err := os.ReadDir(myDir)
+	if err != nil {
+		log.Println(err)
+	}
+
+	for _, e := range dirs {
+		if e.IsDir() {
+			rows = append(rows, table.Row{e.Name()})
 		}
 	}
 
@@ -110,11 +122,20 @@ func Ktea() {
 	}
 
 	if selection != "" {
-		if _, err := os.Lstat(os.Getenv("HOME") + "/.kube/config"); err == nil {
-			os.Remove(os.Getenv("HOME") + "/.kube/config")
+		if strFlag == "env" {
+			fmt.Printf("Setting ${KUBECONFIG} to ${HOME}/.kube/%s\n", selection)
+			os.Setenv("KUBECONFIG", os.Getenv("HOME")+"/.kube"+selection)
+			fmt.Println("KUBECONFIG:", os.Getenv("KUBECONFIG"))
+		} else {
+			if _, err := os.Lstat(os.Getenv("HOME") + "/.kube/config"); err == nil {
+				os.Remove(os.Getenv("HOME") + "/.kube/config")
+			}
+			fmt.Printf("Linking ${HOME}/.kube/conifg -> %s\n", selection)
+			err := os.Symlink(os.Getenv("HOME")+"/.kube/"+selection, os.Getenv("HOME")+"/.kube/config")
+			if err != nil {
+				log.Println(err)
+			}
 		}
-		fmt.Printf("Linking ${HOME}/.kube/conifg -> %s\n", selection)
-		os.Symlink(os.Getenv("HOME")+"/.kube/"+selection, os.Getenv("HOME")+"/.kube/config")
 	} else {
 		fmt.Println("No changes made.")
 	}
