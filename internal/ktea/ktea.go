@@ -18,7 +18,8 @@ var baseStyle = lipgloss.NewStyle().
 var selection string = ""
 
 type model struct {
-	table  table.Model
+	table table.Model
+
 	width  int
 	height int
 }
@@ -78,12 +79,6 @@ func Ktea(strFlag string, myDir string) {
 
 	rows := []table.Row{}
 
-	//	for _, file := range files {
-	//		if file.Type().IsRegular() {
-	//			rows = append(rows, table.Row{file.Name()})
-	//		}
-	//	}
-
 	dirs, err := os.ReadDir(myDir)
 	if err != nil {
 		log.Println(err)
@@ -92,6 +87,13 @@ func Ktea(strFlag string, myDir string) {
 	for _, e := range dirs {
 		if e.IsDir() {
 			rows = append(rows, table.Row{e.Name()})
+		}
+	}
+
+	//	for _, file := range files {
+	for _, file := range dirs {
+		if file.Type().IsRegular() {
+			rows = append(rows, table.Row{file.Name()})
 		}
 	}
 

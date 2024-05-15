@@ -21,6 +21,10 @@ confirm:
 run/ktea:
 	go run ./cmd/ktea
 
+.PHONY: run/kfile
+run/kfile:
+	go run ./cmd/kfile
+
 ## audit: tidy and vendor dependencies and format, vet and test all code
 .PHONY: audit
 audit: vendor
@@ -46,6 +50,14 @@ vendor:
 build/ktea:
 	@echo 'Building cmd/ktea...'
 	go build -o=./bin/ktea ./cmd/ktea
+#	go build -ldflags='-s -w' -o=./bin/api ./cmd/api
+#	GOOS=linux GOARCH=amd64 go build -o=./bin/linux_amd64/ktea ./cmd/ktea
+# strip dev
+#	GOOS=linux GOARCH=amd64 go build -ldflags='-s -w' -o=./bin/linux_amd64/api ./cmd/api
+.PHONY: build/kfile
+build/kfile:
+	@echo 'Building cmd/kfile...'
+	go build -o=./bin/kfile ./cmd/kfile
 #	go build -ldflags='-s -w' -o=./bin/api ./cmd/api
 #	GOOS=linux GOARCH=amd64 go build -o=./bin/linux_amd64/ktea ./cmd/ktea
 # strip dev
