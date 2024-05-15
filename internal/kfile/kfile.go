@@ -10,6 +10,7 @@ import (
 
 	"github.com/charmbracelet/bubbles/filepicker"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 type model struct {
@@ -89,6 +90,9 @@ func Kfile(strFlag string, myDir string) {
 	fp.CurrentDirectory = myDir
 	fp.ShowPermissions = false
 	fp.ShowSize = false
+	fp.Styles.Cursor = lipgloss.NewStyle().Foreground(lipgloss.Color("1"))
+	fp.Styles.Selected = lipgloss.NewStyle().Foreground(lipgloss.Color("255"))
+	fp.Styles.Directory = lipgloss.NewStyle().Foreground(lipgloss.Color("33"))
 
 	m := model{
 		filepicker: fp,
