@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"ktea/internal/ktea"
+	"ktea/internal/kfile"
 )
 
 func main() {
@@ -12,5 +12,5 @@ func main() {
 	flag.StringVar(&strFlag, "c", "link", "env|link ('env' sets KUBECONFIG|'link' creates link)")
 	flag.Parse()
 
-	ktea.Ktea(strFlag, "/home/cmalfait/.kube")
+	kfile.Kfile(strFlag, "/home/cmalfait/.kube")
 }
