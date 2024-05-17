@@ -7,8 +7,10 @@ Ktea is a simple terminal menu to manage multiple kubernetes configuration files
 
 ## Installation
 make build/ktea
+make build/kfile
 
 sudo cp bin/ktea /usr/local/bin
+sudo cp bin/kfile /usr/local/bin
 
 ## Usage
 /usr/local/bin/ktea
