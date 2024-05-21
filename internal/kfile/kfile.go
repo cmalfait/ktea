@@ -76,11 +76,11 @@ func (m model) View() string {
 	if m.err != nil {
 		s.WriteString(m.filepicker.Styles.DisabledFile.Render(m.err.Error()))
 	} else if m.selectedFile == "" {
-		s.WriteString("Select a config:")
+		s.WriteString("Select a config (j/k or arrows to navigate):")
 	} else {
 		s.WriteString("Selected config: " + m.filepicker.Styles.Selected.Render(m.selectedFile))
 	}
-	s.WriteString("\n\n" + m.filepicker.View() + "\n")
+	s.WriteString("\n" + m.filepicker.View() + "\n")
 	return s.String()
 }
 
