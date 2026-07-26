@@ -51,6 +51,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	if didSelect, path := m.filepicker.DidSelectFile(msg); didSelect {
 		// Get the path of the selected file.
 		m.selectedFile = path
+		return m, tea.Quit
 	}
 
 	// Did the user select a disabled file?
