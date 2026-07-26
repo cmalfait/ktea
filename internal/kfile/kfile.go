@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/charmbracelet/bubbles/filepicker"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbles/v2/filepicker"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 type model struct {
@@ -34,13 +34,11 @@ func (m model) Init() tea.Cmd {
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
-	case tea.KeyMsg:
+	case tea.KeyPressMsg:
 		switch msg.String() {
 		case "ctrl+c", "q":
 			m.quitting = true
 			return m, tea.Quit
-			//		case "enter":
-			//			return m, tea.Quit
 		}
 	case clearErrorMsg:
 		m.err = nil
@@ -67,21 +65,23 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
-func (m model) View() string {
+func (m model) View() tea.View {
 	if m.quitting {
-		return ""
+		return tea.NewView("")
 	}
 	var s strings.Builder
 	s.WriteString("\n  ")
 	if m.err != nil {
 		s.WriteString(m.filepicker.Styles.DisabledFile.Render(m.err.Error()))
 	} else if m.selectedFile == "" {
-		s.WriteString("Select a config (j/k or arrows to navigate):")
+		s.WriteString("Pick a file:")
 	} else {
-		s.WriteString("Selected config: " + m.filepicker.Styles.Selected.Render(m.selectedFile))
+		s.WriteString("Selected file: " + m.filepicker.Styles.Selected.Render(m.selectedFile))
 	}
-	s.WriteString("\n" + m.filepicker.View() + "\n")
-	return s.String()
+	s.WriteString("\n\n" + m.filepicker.View() + "\n")
+	v := tea.NewView(s.String())
+	v.AltScreen = true
+	return v
 }
 
 func Kfile(strFlag string, myDir string) {
