@@ -101,8 +101,9 @@ func Kfile(strFlag string, myDir string) {
 	mm := tm.(model)
 	if mm.selectedFile != "" {
 		if strFlag == "env" {
-			fmt.Printf("Setting ${KUBECONFIG} to ${HOME}/.kube/%s\n", mm.selectedFile)
-			os.Setenv("KUBECONFIG", os.Getenv("HOME")+"/.kube"+mm.selectedFile)
+			fmt.Printf("Setting ${KUBECONFIG} to %s\n", mm.selectedFile)
+			//os.Setenv("KUBECONFIG", os.Getenv("HOME")+"/.kube"+mm.selectedFile)
+			os.Setenv("KUBECONFIG", mm.selectedFile)
 			fmt.Println("KUBECONFIG:", os.Getenv("KUBECONFIG"))
 		} else {
 			if _, err := os.Lstat(os.Getenv("HOME") + "/.kube/config"); err == nil {
