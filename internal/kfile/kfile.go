@@ -75,11 +75,16 @@ func (m model) View() tea.View {
 	if m.err != nil {
 		s.WriteString(m.filepicker.Styles.DisabledFile.Render(m.err.Error()))
 	} else if m.selectedFile == "" {
-		s.WriteString("Pick a file:")
+		s.WriteString("Pick a kubernetes config:")
 	} else {
-		s.WriteString("Selected file: " + m.filepicker.Styles.Selected.Render(m.selectedFile))
+		//s.WriteString("Selected config: " + m.filepicker.Styles.Selected.Render(m.selectedFile))
+		s.WriteString("Selected config: ")
+		s.WriteString(m.filepicker.Styles.Selected.Render(m.selectedFile))
 	}
-	s.WriteString("\n\n" + m.filepicker.View() + "\n")
+	//s.WriteString("\n\n" + m.filepicker.View() + "\n")
+	s.WriteString("\n\n")
+	s.WriteString(m.filepicker.View())
+	s.WriteString("\n")
 	v := tea.NewView(s.String())
 	v.AltScreen = true
 	return v
@@ -103,7 +108,6 @@ func Kfile(strFlag string, myDir string) {
 	if mm.selectedFile != "" {
 		if strFlag == "env" {
 			fmt.Printf("Setting ${KUBECONFIG} to %s\n", mm.selectedFile)
-			//os.Setenv("KUBECONFIG", os.Getenv("HOME")+"/.kube"+mm.selectedFile)
 			os.Setenv("KUBECONFIG", mm.selectedFile)
 			fmt.Println("KUBECONFIG:", os.Getenv("KUBECONFIG"))
 		} else {
