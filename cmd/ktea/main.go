@@ -2,15 +2,14 @@ package main
 
 import (
 	"flag"
+	"os"
 
 	"ktea/internal/ktea"
 )
 
 func main() {
-	var strFlag string
-
-	flag.StringVar(&strFlag, "c", "link", "env|link ('env' sets KUBECONFIG|'link' creates link)")
+	strFlagPtr := flag.String("type", "link", "env|link ('env' sets KUBECONFIG|'link' creates link)")
 	flag.Parse()
 
-	ktea.Ktea(strFlag, "${HOME}/.kube")
+	ktea.Ktea(*strFlagPtr, os.Getenv("HOME")+"/.kube")
 }
